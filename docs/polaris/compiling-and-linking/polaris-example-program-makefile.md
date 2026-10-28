@@ -12,15 +12,7 @@ module unload darshan
 CC -fopenmp main.cpp -o hello_affinity
 ```
 
-/// warning | Unload Darshan before building MPI applications
-In the current default environment (`PrgEnv-nvidia/8.7.0`, `cray-mpich/9.1.0`), the default `darshan/3.5.0` module makes the compiler wrappers link `libdarshan.so`, which depends on `libmpi_gnu_123.so.12`. That library is not provided by `cray-mpich/9.1.0`, so the executable builds but fails at launch with:
-
-```output
-./hello_affinity: error while loading shared libraries: libmpi_gnu_123.so.12: cannot open shared object file: No such file or directory
-```
-
-Running `module unload darshan` before compiling avoids the problem. Check for it with `ldd ./hello_affinity | grep 'not found'`.
-///
+Unloading `darshan` works around a [known issue](../known-issues.md#compiling-running-applications) with the current default modules.
 
 The executable `hello_affinity` can then be launched in a job script (or directly in the shell of an interactive job) using `mpiexec` as discussed here.
 
